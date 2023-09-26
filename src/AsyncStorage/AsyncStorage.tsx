@@ -21,6 +21,7 @@ export const retrieveUserId = async () => {
     return null;
   }
 };
+
 export const clearUserId = async () => {
   try {
     await AsyncStorage.removeItem(CONSTANT.USERID);
