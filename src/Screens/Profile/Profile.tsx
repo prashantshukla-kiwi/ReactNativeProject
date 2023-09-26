@@ -7,6 +7,7 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import ProfileHeader from '../../Components/ProfileHeader';
 import IMAGES from '../../Constants/ImagesName';
@@ -25,20 +26,25 @@ import ManageAccountAndSetting from './ManageAccountAndSetting';
 import {getApiRequest} from '../../NetworManager/MyAxiosRequest';
 import URL from '../../NetworManager/Url';
 import {retrieveUserId} from '../../AsyncStorage/AsyncStorage';
+import MyActivityIndicator from '../../Components/MyActivityIndicator';
 
 const Profile = () => {
   const [data, setData] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
   useEffect(() => {
     fetchData();
   }, []);
   const fetchData = async () => {
+    setLoading(true);
     const userId = await retrieveUserId();
     try {
       const response = await getApiRequest(`${URL.PROFILE_END_POINT}${userId}`);
       setData(response?.data);
+      setLoading(false);
       console.log(response?.data?.first_name);
     } catch (error) {
-      console.error('Error:', error);
+      setLoading(false);
+      Alert.alert(CONSTANT.SOMETHING_WENT_WORNG);
     }
   };
   return (
@@ -99,6 +105,7 @@ const Profile = () => {
         <LoyaltyClubs />
         <MyPostAndLB />
         <ManageAccountAndSetting />
+        {loading ? <MyActivityIndicator /> : null}
       </ScrollView>
     </SafeAreaView>
   );

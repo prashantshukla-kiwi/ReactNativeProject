@@ -45,6 +45,8 @@ const CONSTANT = {
   COLOR253553: '#253553',
   COLORF2F3F5: '#F2F3F5',
   RED_COLOR: 'red',
+  BLUE: 'blue',
+  LARGE: 'large',
   EDIT_PROFILE: 'Edit Profile',
   MY_POST: 'My Posts',
   SEE_YOUR_FAV: 'Create new ones and see your favorites',

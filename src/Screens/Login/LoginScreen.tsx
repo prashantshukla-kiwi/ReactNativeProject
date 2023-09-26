@@ -1,17 +1,13 @@
 import React, {useEffect} from 'react';
 import {
   View,
-  ImageBackground,
   Text,
   Alert,
-  TouchableOpacity,
   StyleSheet,
   SafeAreaView,
-  TextInput,
+  ActivityIndicator,
 } from 'react-native';
-import {
-  apiRequest,
-} from '../../NetworManager/MyAxiosRequest';
+import {apiRequest} from '../../NetworManager/MyAxiosRequest';
 import {
   normalizeFont,
   scaleHeight,
@@ -23,11 +19,13 @@ import FONTS from '../../Constants/FONTS';
 import CONSTANT, {GlobalStyleValues} from '../../Constants/Constant';
 import URL from '../../NetworManager/Url';
 import {clearUserId, storeUserId} from '../../AsyncStorage/AsyncStorage';
+import MyActivityIndicator from '../../Components/MyActivityIndicator';
 const LoginScreen = props => {
   const [email, setEmail] = React.useState();
   const [password, setPassword] = React.useState();
   const [emailError, setEmailError] = React.useState('');
   const [passwordError, setPasswordError] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
   const handleEmailChange = newEmail => {
     setEmail(newEmail);
 
@@ -64,6 +62,7 @@ const LoginScreen = props => {
     }
   };
   const postData = async () => {
+    setLoading(true);
     try {
       const requestData = {
         email: email,
@@ -79,8 +78,10 @@ const LoginScreen = props => {
       clearUserId();
       const userId = response?.data?.id;
       storeUserId(userId);
+      setLoading(false);
       props.navigation.navigate(CONSTANT.TABNAVIGATOR);
     } catch (error) {
+      setLoading(false);
       Alert.alert(CONSTANT.SOMETHING_WENT_WORNG);
     }
   };
@@ -91,9 +92,7 @@ const LoginScreen = props => {
           <Text style={styles.signInText}>{CONSTANT.SIGN_TEXT}</Text>
           <Text style={styles.signUPText}>{CONSTANT.SIGNUP_TEXT}</Text>
         </View>
-        <Text style={styles.credentidalText}>
-         {CONSTANT.ENTER_CREDENTIAL}
-        </Text>
+        <Text style={styles.credentidalText}>{CONSTANT.ENTER_CREDENTIAL}</Text>
         <View style={styles.username}>
           <CustomInput
             placeholder={CONSTANT.EMAIL_TEXT}
@@ -124,6 +123,7 @@ const LoginScreen = props => {
         <View style={styles.explorLuckyDiem}>
           <Text style={styles.faceIDText}>{CONSTANT.EXPLOR_LUCKDIEM}</Text>
         </View>
+        {loading ? <MyActivityIndicator /> : null}
       </View>
     </SafeAreaView>
   );
