@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
 
   rightContainer: {
     alignItems: GlobalStyleValues.FLEX_START,
-    marginRight: 38,
+    marginRight: 18,
   },
 });
 
